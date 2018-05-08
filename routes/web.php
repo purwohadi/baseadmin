@@ -17,7 +17,6 @@ Route::get('/', function () {
     }
 
     return redirect('/dashboard');
-
 });
 
 Auth::routes();

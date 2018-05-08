@@ -18,6 +18,9 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer('*', function ($view){
             $view->with('currentUser', Auth::user());
         });
+        View::composer('includes.navbar_left', function ($view){
+            $view->with('leftMenu', config('baseadmin.left_menu'));
+        });
     }
 
     /**
