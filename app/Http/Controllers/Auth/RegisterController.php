@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -55,18 +56,29 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
+
+    public function register(Request $request)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6|confirmed',
         ]);
+
+        $user = User::where('email', $request->get('email'))->first();
+
+        if (!$user){
+            return redirect()->back()->withErrors([config('baseadmin.user_registration.preaproved_users_only_error_message')]);
+        }
+
+        if (strlen($request->get('name')) > strlen($user->name)){
+            $user->name = $request->get('name');
+        }
+
+        $user->password = Hash::make($request->get('password'));
+        $user->save();
+
+        return redirect('login');
     }
+
 }

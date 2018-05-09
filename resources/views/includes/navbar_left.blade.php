@@ -10,11 +10,9 @@
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            @if ($currentUser->image)
             <div class="image">
-                <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                <img src="{{($currentUser->image)?:asset('img/user.png')}}" class="img-circle elevation-2" alt="User Image">
             </div>
-            @endif
             <div class="info">
                 <a href="#" class="d-block">{{$currentUser->name}}</a>
             </div>
@@ -28,22 +26,22 @@
                 @foreach ($leftMenu as $menuItem)
                     @if (!array_key_exists('children', $menuItem))
                         <li class="nav-item">
-                            <a href="{{$menuItem['url']}}" class="nav-link">
-                                <i class="nav-icon fa fa-th"></i>
+                            <a href="{{url($menuItem['url'])}}" class="nav-link">
+                                <i class="nav-icon {{array_key_exists('icon', $menuItem) && $menuItem['icon']?$menuItem['icon']:'fa fa-circle-o'}}"></i>
                                 <p>{{$menuItem['label']}}</p>
                             </a>
                         </li>
                     @else
                         <li class="nav-item has-treeview menu-open">
-                            <a href="{{$menuItem['url']}}" class="nav-link">
-                                <i class="nav-icon fa fa-dashboard"></i>
+                            <a href="{{url($menuItem['url'])}}" class="nav-link">
+                                <i class="nav-icon {{array_key_exists('icon', $menuItem) && $menuItem['icon']?$menuItem['icon']:'fa fa-circle-o'}}"></i>
                                 <p>{{$menuItem['label']}}</p>
                             </a>
                             <ul>
                             @foreach ($menuItem['children'] as $subMenuItem)
                                 <li class="nav-item">
-                                    <a href="{{$subMenuItem['url']}}" class="nav-link">
-                                        <i class="fa fa-c   ircle-o nav-icon"></i>
+                                    <a href="{{url($subMenuItem['url'])}}" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
                                         <p>{{$subMenuItem['label']}}</p>
                                     </a>
                                 </li>
