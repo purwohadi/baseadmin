@@ -50,13 +50,13 @@
                                         <label for="name">Name</label>
                                         <input type="text" class="form-control" id="name" name="name"
                                                placeholder="Name"
-                                               value="{{isset($user)?$user->name:''}}">
+                                               value="{{isset($user)?old('name',$user->name):old('name')}}">
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email address</label>
                                         <input type="email" class="form-control" id="email" name="email" required
                                                placeholder="Enter email"
-                                               value="{{isset($user)?$user->email:''}}"
+                                               value="{{isset($user)?old('email',$user->email):old('email')}}"
                                                 {{isset($user)?'disabled':''}}>
                                     </div>
                                 </div>
@@ -73,8 +73,18 @@
                                         <label for="phone">Phone</label>
                                         <input type="text" class="form-control" id="phone" name="phone"
                                                placeholder="Phone number"
-                                               value="{{isset($user)?$user->phone:''}}">
+                                               value="{{isset($user)?old('phone',$user->phone):old('phone')}}">
                                     </div>
+                                </div>
+                                <div class="col-md-6 p-5">
+                                    <div class="form-group">
+                                        <label for="email">Short bio</label>
+                                        <textarea name="bio" id="bio" class="form-control"
+                                                  placeholder="Tell us your story..."
+                                                  maxlength="4000"
+                                                  rows="7">{{isset($user)?old('bio',$user->bio):old('bio')}}</textarea>
+                                    </div>
+                                    
                                 </div>
 
                                 @if(!isset($user))

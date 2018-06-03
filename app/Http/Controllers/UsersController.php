@@ -23,18 +23,6 @@ class UsersController extends Controller
         return view('users.add_edit')->with('roles',$roles)->with('activeMenu', 'users');
     }
 
-    public function edit($id)
-    {
-        $user = User::find($id);
-
-        if (!$user){
-            return redirect()->route('users.index')->withErrors(["That user doesn't exist or you don't have the right to edit it"]);
-        }
-
-        $roles = Role::get();
-        return view('users.add_edit')->with('user', $user)->with('roles',$roles)->with('activeMenu', 'users');
-    }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -42,7 +30,7 @@ class UsersController extends Controller
             'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL'
         ]);
 
-        $input = $request->only(['name', 'email', 'phone', 'role_id']);
+        $input = $request->only(['name', 'email', 'phone', 'role_id', 'bio']);
 
         $user = new User($input);
         $user->password = Hash::make(rand(1, 100000));
@@ -56,5 +44,34 @@ class UsersController extends Controller
             Mail::to($user)->send(new NewUserCreated($user));
         }
 
+        return redirect()->route('users.index')->with('success', "Great! {$user->name} was added in our system.");
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+
+        if (!$user){
+            return redirect()->route('users.index')->withErrors(["That user doesn't exist or you don't have the right to edit it"]);
+        }
+
+        $roles = Role::get();
+        return view('users.add_edit')->with('user', $user)->with('roles',$roles)->with('activeMenu', 'users');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:100'
+        ]);
+
+        $venueManager = User::find($id);
+        $venueManager->name = $request->get('name');
+        $venueManager->phone = $request->get('phone');
+        $venueManager->bio = $request->get('bio');
+        $venueManager->role_id = $request->get('role_id');
+        $venueManager->save();
+
+        return redirect()->route('users.index');
     }
 }

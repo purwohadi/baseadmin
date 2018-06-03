@@ -27,6 +27,7 @@
                 <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Email</th>
                     <th>Role</th>
                     <th></th>
                 </tr>
@@ -36,6 +37,7 @@
                 @foreach($users as $user)
                     <tr>
                         <td><a href="{{route('users.edit', $user->id)}}">{{$user->name}}</a></td>
+                        <td><small>{{$user->email}}</small></td>
                         <td>{{$user->role->label}}</td>
                         <td align="right" style="position: relative" class="p-3">
                             @include('includes.delete-button',['id' => $user->id, 'route' => route('users.destroy', $user->id)])
