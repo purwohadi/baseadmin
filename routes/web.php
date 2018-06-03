@@ -22,5 +22,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+});
+
+Route::middleware(['auth','superadmin'])->group(function () {
+    Route::resource('/users', 'UsersController');
 });

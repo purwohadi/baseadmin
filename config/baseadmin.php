@@ -5,6 +5,7 @@
  * Date: 5/8/18
  * Time: 15:21
  */
+use App\Role;
 
 return [
     'navbar_top' => [
@@ -24,10 +25,11 @@ return [
             'icon' => 'fa fa-dashboard'
         ],
         [
-            'name' => 'example-link',
-            'label' => 'Example link',
-            'url' => '/home',
-            'icon' => ''
+            'name' => 'users',
+            'label' => 'Users',
+            'url' => '/users',
+            'icon' => 'fa fa-group',
+            'allowed_role_ids' => [Role::SUPER_ADMIN_ID]
         ],
         [
             'name' => 'has-children',

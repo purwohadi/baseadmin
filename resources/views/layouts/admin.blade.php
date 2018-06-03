@@ -8,27 +8,31 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('pageTitle') | {{ config('app.name', 'Laravel') }}</title>
 
     <link href="{{ asset('plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    @if (config('app.env') == 'production')
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    @else
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    @endif
+
+    @yield('headIncludes')
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
-    @include('includes.navbar_top')
+@include('includes.navbar_top')
 
-    @include('includes.navbar_left')
+@include('includes.navbar_left')
 
-    <!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        @include('includes.page_header')
-
-        <div class="content">
-            @yield('content')
-        </div>
+        @yield('content')
     </div>
     <!-- /.content-wrapper -->
 
@@ -42,10 +46,14 @@
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
+<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 <!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
 <!-- AdminLTE App -->
-<script src="js/AdminLTE.js"></script>
+<script src="{{asset('js/AdminLTE.js')}}"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@yield('footerIncludes')
+
 </body>
 </html>

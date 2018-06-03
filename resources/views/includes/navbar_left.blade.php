@@ -11,7 +11,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{($currentUser->image)?:asset('img/user.png')}}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{($currentUser->avatar)?asset($currentUser->avatar):asset('img/user.png')}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
                 <a href="#" class="d-block">{{$currentUser->name}}</a>
@@ -24,67 +24,36 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 @foreach ($leftMenu as $menuItem)
-                    @if (!array_key_exists('children', $menuItem))
-                        <li class="nav-item">
-                            <a href="{{url($menuItem['url'])}}" class="nav-link">
-                                <i class="nav-icon {{array_key_exists('icon', $menuItem) && $menuItem['icon']?$menuItem['icon']:'fa fa-circle-o'}}"></i>
-                                <p>{{$menuItem['label']}}</p>
-                            </a>
-                        </li>
-                    @else
-                        <li class="nav-item has-treeview menu-open">
-                            <a href="{{url($menuItem['url'])}}" class="nav-link">
-                                <i class="nav-icon {{array_key_exists('icon', $menuItem) && $menuItem['icon']?$menuItem['icon']:'fa fa-circle-o'}}"></i>
-                                <p>{{$menuItem['label']}}</p>
-                            </a>
-                            <ul>
-                            @foreach ($menuItem['children'] as $subMenuItem)
-                                <li class="nav-item">
-                                    <a href="{{url($subMenuItem['url'])}}" class="nav-link">
-                                        <i class="fa fa-circle-o nav-icon"></i>
-                                        <p>{{$subMenuItem['label']}}</p>
-                                    </a>
-                                </li>
-                            @endforeach
-                            </ul>
-                        </li>
+                    @if(!array_key_exists('allowed_role_ids', $menuItem) || in_array(Auth::user()->role_id, $menuItem['allowed_role_ids']))
+
+                        @if (!array_key_exists('children', $menuItem))
+                            <li class="nav-item">
+                                <a href="{{url($menuItem['url'])}}" class="nav-link {{($activeMenu == $menuItem['name'])?'active':''}}">
+                                    <i class="nav-icon {{array_key_exists('icon', $menuItem) && $menuItem['icon']?$menuItem['icon']:'fa fa-circle-o'}}"></i>
+                                    <p>{{$menuItem['label']}}</p>
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item has-treeview">
+                                <a href="{{url($menuItem['url'])}}" class="nav-link {{($activeMenu == $menuItem['name'])?'active':''}}">
+                                    <i class="nav-icon {{array_key_exists('icon', $menuItem) && $menuItem['icon']?$menuItem['icon']:'fa fa-circle-o'}}"></i>
+                                    <p>{{$menuItem['label']}}</p>
+                                </a>
+                                <ul>
+                                    @foreach ($menuItem['children'] as $subMenuItem)
+                                        <li class="nav-item">
+                                            <a href="{{url($subMenuItem['url'])}}" class="nav-link {{($activeMenu == $subMenuItem['name'])?'active':''}}">
+                                                <i class="fa fa-circle-o nav-icon"></i>
+                                                <p>{{$subMenuItem['label']}}</p>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
                     @endif
 
                 @endforeach
-
-
-                {{--<li class="nav-item has-treeview menu-open">--}}
-                    {{--<a href="#" class="nav-link active">--}}
-                        {{--<i class="nav-icon fa fa-dashboard"></i>--}}
-                        {{--<p>--}}
-                            {{--Starter Pages--}}
-                            {{--<i class="right fa fa-angle-left"></i>--}}
-                        {{--</p>--}}
-                    {{--</a>--}}
-                    {{--<ul class="nav nav-treeview">--}}
-                        {{--<li class="nav-item">--}}
-                            {{--<a href="#" class="nav-link active">--}}
-                                {{--<i class="fa fa-circle-o nav-icon"></i>--}}
-                                {{--<p>Active Page</p>--}}
-                            {{--</a>--}}
-                        {{--</li>--}}
-                        {{--<li class="nav-item">--}}
-                            {{--<a href="#" class="nav-link">--}}
-                                {{--<i class="fa fa-circle-o nav-icon"></i>--}}
-                                {{--<p>Inactive Page</p>--}}
-                            {{--</a>--}}
-                        {{--</li>--}}
-                    {{--</ul>--}}
-                {{--</li>--}}
-                {{--<li class="nav-item">--}}
-                    {{--<a href="#" class="nav-link">--}}
-                        {{--<i class="nav-icon fa fa-th"></i>--}}
-                        {{--<p>--}}
-                            {{--Simple Link--}}
-                            {{--<span class="right badge badge-danger">New</span>--}}
-                        {{--</p>--}}
-                    {{--</a>--}}
-                {{--</li>--}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

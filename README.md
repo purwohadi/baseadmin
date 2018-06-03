@@ -8,4 +8,5 @@ A starting point for most of my new projects. Work in progress...
  - AdminLTE organized in blade templates
  - Pre approved user registration (Only users whose emails have been peviously added in the system can register)
  - Notifications (TODO)
- - Configurable menu items 
+ - Configurable menu items (role based)
+ - User roles

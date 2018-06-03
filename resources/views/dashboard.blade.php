@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+    @include('includes.page_header')
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6">
